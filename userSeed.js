@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import connectToDatabase from './db/db.js';
 import User from './models/User.js'
 import Employee from './models/Employee.js'
