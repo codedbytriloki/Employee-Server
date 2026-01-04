@@ -36,12 +36,14 @@ const addEmployees = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
+    const profileImage = req.file ? req.file.filename : null;
+    
     const newUser = new User({
       name,
       email,
       password: hashPassword,
       role: "employee",
-      profileImage: req.file ? req.file.filename : ""
+      profileImage: profileImage
     })
     const saveUser = await newUser.save();
 
