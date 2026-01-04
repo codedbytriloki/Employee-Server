@@ -21,7 +21,8 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
-  'https://employee-frontend-five-lemon.vercel.app'
+  'https://employee-frontend-five-lemon.vercel.app',
+  'https://employee-frontend-git-main-trilokis-projects.vercel.app'
 ];
 
 app.use(cors({
