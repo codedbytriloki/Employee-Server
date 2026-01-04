@@ -20,8 +20,11 @@ const addEmployees = async (req, res) => {
   try {
     const { name, email, employeeId, dob, gender, maritalStatus, designation, department, salary, password } = req.body;
 
+    console.log("Request body:", req.body);
+    console.log("File received:", req.file);
+
     if (!name || !email || !employeeId || !department || !salary || !password) {
-      return res.status(400).json({ success: false, error: "Missing required fields" })
+      return res.status(400).json({ success: false, error: "Missing required fields: " + JSON.stringify({name, email, employeeId, department, salary, password}) })
     }
 
     const user = await User.findOne({ email });
@@ -60,7 +63,7 @@ const addEmployees = async (req, res) => {
     await newEmp.save();
     return res.status(200).json({ success: true, message: "employee created" })
   } catch (error) {
-    console.log(error);
+    console.log("Error in addEmployees:", error);
     return res.status(500).json({ success: false, error: error.message || "Server error in adding employee" })
   }
 }
