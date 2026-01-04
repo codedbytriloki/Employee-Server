@@ -15,10 +15,9 @@ import dashboardRouter from './routes/dashboard.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-connectToDatabase();
 const app = express();
 app.use(cors({
-  origin: 'https://employee-frontend-five-lemon.vercel.app/',
+  origin: 'https://employee-frontend-five-lemon.vercel.app',
   credentials: true,
 }));
 app.use(express.json());
@@ -34,6 +33,19 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running ${PORT}`);
-})
+// Initialize database and start server
+const startServer = async () => {
+  try {
+    await connectToDatabase();
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
+
+export default app;
