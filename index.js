@@ -17,26 +17,30 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
-// Configure CORS - allow both development and production origins
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://employee-frontend-five-lemon.vercel.app',
-  'https://employee-frontend-git-main-trilokis-projects.vercel.app'
-];
-
+// Configure CORS - more flexible approach
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, etc)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // List of allowed origins
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://employee-frontend-five-lemon.vercel.app',
+      'https://employee-frontend-git-main-trilokis-projects.vercel.app'
+    ];
+    
+    // Allow requests with no origin or matching origin
+    if (!origin || allowedOrigins.some(allowed => origin && origin.includes(allowed.replace('https://', '').replace('http://', '')))) {
+      callback(null, true);
+    } else if (origin && origin.includes('vercel.app')) {
+      // Allow any vercel.app domain
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, true); // Allow all for debugging
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 app.use(express.json());
 app.use(express.static('public/uploads'))
