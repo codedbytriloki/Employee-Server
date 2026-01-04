@@ -18,7 +18,17 @@ const login = async (req, res) => {
       process.env.JWT_Key, { expiresIn: "10d" }
     )
 
-    res.status(200).json({ success: true, token, user: { _id: user._id, name: user.name, role: user.role } })
+    res.status(200).json({ 
+      success: true, 
+      token, 
+      user: { 
+        _id: user._id, 
+        name: user.name, 
+        email: user.email,
+        role: user.role,
+        department: user.department || null
+      } 
+    })
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, error: "Server error" });

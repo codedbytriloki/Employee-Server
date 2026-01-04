@@ -16,9 +16,26 @@ import dashboardRouter from './routes/dashboard.js'
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+
+// Configure CORS - allow both development and production origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://employee-frontend-five-lemon.vercel.app'
+];
+
 app.use(cors({
-  origin: 'https://employee-frontend-five-lemon.vercel.app',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.static('public/uploads'))
