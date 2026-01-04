@@ -27,7 +27,7 @@ app.use(cors({
       'https://employee-frontend-five-lemon.vercel.app',
       'https://employee-frontend-git-main-trilokis-projects.vercel.app'
     ];
-    
+
     // Allow requests with no origin or matching origin
     if (!origin || allowedOrigins.some(allowed => origin && origin.includes(allowed.replace('https://', '').replace('http://', '')))) {
       callback(null, true);
