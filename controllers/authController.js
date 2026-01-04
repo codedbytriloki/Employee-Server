@@ -18,16 +18,16 @@ const login = async (req, res) => {
       process.env.JWT_Key, { expiresIn: "10d" }
     )
 
-    res.status(200).json({ 
-      success: true, 
-      token, 
-      user: { 
-        _id: user._id, 
-        name: user.name, 
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
         email: user.email,
         role: user.role,
         department: user.department || null
-      } 
+      }
     })
   } catch (err) {
     console.log(err);
@@ -36,7 +36,7 @@ const login = async (req, res) => {
 }
 
 const verify = async (req, res) => {
-  return res.status(200).json({success:true, user : req.user})
-} 
+  return res.status(200).json({ success: true, user: req.user })
+}
 
 export { login, verify };
