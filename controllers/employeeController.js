@@ -18,13 +18,13 @@ const upload = multer({ storage: storage })
 
 const addEmployees = async (req, res) => {
   try {
-    const { name, email, employeeId, dob, gender, maritalStatus, designation, department, salary, password } = req.body;
+    const { name, email, employeeId, dob, gender, maritalStatus, designation, department, salary, password, role } = req.body;
 
     console.log("Request body:", req.body);
     console.log("File received:", req.file);
 
     if (!name || !email || !employeeId || !department || !salary || !password) {
-      return res.status(400).json({ success: false, error: "Missing required fields: " + JSON.stringify({name, email, employeeId, department, salary, password}) })
+      return res.status(400).json({ success: false, error: "Missing required fields: " + JSON.stringify({ name, email, employeeId, department, salary, password }) })
     }
 
     const user = await User.findOne({ email });
@@ -45,7 +45,7 @@ const addEmployees = async (req, res) => {
       name,
       email,
       password: hashPassword,
-      role: "employee",
+      role: role || "employee",
       profileImage: profileImage
     })
     const saveUser = await newUser.save();
