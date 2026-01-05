@@ -22,12 +22,17 @@ const connectToDatabase = async () => {
 
   if (!globalAny._mongo.promise) {
     const opts = {
-      // Mongoose 6+ has sensible defaults; include a short server selection timeout
-      serverSelectionTimeoutMS: 5000
+      serverSelectionTimeoutMS: 30000, // Increased from 5000 to 30000
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 30000,
+      retryWrites: true,
+      w: 'majority'
     };
     globalAny._mongo.promise = mongoose.connect(MONGO_URL, opts).then((mongooseInstance) => {
+      console.log('Successfully connected to MongoDB Atlas');
       return mongooseInstance;
     }).catch(err => {
+      console.error('MongoDB Connection Error:', err.message);
       globalAny._mongo.promise = null;
       throw err;
     });
